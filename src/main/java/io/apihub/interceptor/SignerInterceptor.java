@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 
 import io.apihub.client.model.Error;
 import io.apihub.client.model.Errores;
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
@@ -21,11 +20,11 @@ import okhttp3.Response.Builder;
 import okhttp3.ResponseBody;
 import okio.Buffer;
 
-public class SignerInterceptor implements Interceptor{
+public class SignerInterceptor implements Interceptor {
 	private Logger logger = LoggerFactory.getLogger(Signer.class.getName());
 	private Signer signer;
 	private Request newRequest;
-	
+
 	@Override
 	public Response intercept(Chain chain) throws IOException {
 		this.signer = Signer.getInstance();
@@ -33,43 +32,41 @@ public class SignerInterceptor implements Interceptor{
 		this.newRequest = this.procesarFirmado(originalRequest);
 		Response response = chain.proceed(newRequest);
 		return this.procesarVerificado(response);
-		
+
 	}
-	
-	private static String bodyToString(final Request request){
-	    try {
-	        final Request copy = request.newBuilder().build();
-	        final Buffer buffer = new Buffer();
-	        copy.body().writeTo(buffer);
-	        return buffer.readUtf8();
-	    } catch (final IOException e) {
-	        return null;
-	    }
+
+	private static String bodyToString(final Request request) {
+		try {
+			final Request copy = request.newBuilder().build();
+			final Buffer buffer = new Buffer();
+			copy.body().writeTo(buffer);
+			return buffer.readUtf8();
+		} catch (final IOException e) {
+			return null;
+		}
 	}
-	
+
 	private Request procesarFirmado(Request originalRequest) {
 		logger.debug("Generando firmado...");
 		String payload = null;
 		List<String> pathSegments = originalRequest.url().encodedPathSegments();
-		if(pathSegments.size()==4) {
+		if (pathSegments.size() == 4) {
 			payload = pathSegments.get(2);
-		}else {
+		} else {
 			payload = bodyToString(originalRequest);
 		}
-	
+
 		String signature = this.signer.signPayload(payload);
-		if(signature == null) {
+		if (signature == null) {
 			logger.error("Could not sign the payload");
 			System.exit(1);
 		}
 		logger.debug("Firma: " + signature);
-		
-		return originalRequest.newBuilder()
-	            .header("x-signature", signature)
-	            .method(originalRequest.method(), originalRequest.body())
-	            .build();
+
+		return originalRequest.newBuilder().header("x-signature", signature)
+				.method(originalRequest.method(), originalRequest.body()).build();
 	}
-	
+
 	private Response procesarVerificado(Response response) {
 		logger.debug("Verificando firmado...");
 		ResponseBody bodyAsStream = null;
@@ -81,7 +78,7 @@ public class SignerInterceptor implements Interceptor{
 		try {
 			contentType = response.body().contentType();
 			content = response.body().bytes();
-			bodyAsStream = ResponseBody.create(contentType , content);
+			bodyAsStream = ResponseBody.create(contentType, content);
 			payload = bodyAsStream.string();
 			logger.debug("Payload recibido");
 			logger.debug(payload);
@@ -93,29 +90,27 @@ public class SignerInterceptor implements Interceptor{
 			logger.error("Error inesperado");
 			logger.error(e.getMessage());
 		} finally {
-			if( bodyAsStream != null) {
+			if (bodyAsStream != null) {
 				bodyAsStream.close();
-			}	
+			}
 		}
-		if(response.code() == 200) {
-			if(this.signer.verifyPayload(payload, signature)) {
+		if (response.code() == 200) {
+			if (this.signer.verifyPayload(payload, signature)) {
 				logger.debug("Verificación satisfactoria");
 				outResponse = buildResponseBody(response.code(), null, response, contentType, content);
-			}
-			else {
+			} else {
 				logger.error("No se pudo verificar la firma");
 				outResponse = buildResponseBody(403, "No se pudo verificar la firma", response, contentType, null);
 			}
-		}
-		else if( signature == null){
+		} else if (signature == null) {
 			outResponse = buildResponseBody(500, "No se recibió la firma", response, contentType, null);
-		}else {
+		} else {
 			outResponse = buildResponseBody(response.code(), null, response, contentType, content);
 		}
-		
+
 		return outResponse;
 	}
-	
+
 	private String generateError(String code, String message) {
 		logger.debug("Generando error");
 		Errores errs = new Errores();
@@ -123,29 +118,24 @@ public class SignerInterceptor implements Interceptor{
 		err.setCodigo(code);
 		err.setMensaje(message);
 		errs.addErroresItem(err);
-		
+
 		Gson gson = new Gson();
-		
+
 		return gson.toJson(errs);
-		
+
 	}
-	
-	private Response buildResponseBody(Integer statusCode, String message, Response response, MediaType contentType, byte[] content) {
+
+	private Response buildResponseBody(Integer statusCode, String message, Response response, MediaType contentType,
+			byte[] content) {
 		ResponseBody responseBody = null;
 		String responseMessage = HttpStatus.getStatusText(statusCode);
-		if(message != null)
+		if (message != null)
 			responseBody = ResponseBody.create(contentType, generateError(String.valueOf(statusCode), message));
 		else
 			responseBody = ResponseBody.create(contentType, content);
-		Response newResponse = new Builder()
-				.code(statusCode)
-				.protocol(Protocol.HTTP_1_1)
-				.message(responseMessage)
-				.request(this.newRequest)
-				.body(responseBody)
-				.headers(response.headers())
-				.build();
-		
+		Response newResponse = new Builder().code(statusCode).protocol(Protocol.HTTP_1_1).message(responseMessage)
+				.request(this.newRequest).body(responseBody).headers(response.headers()).build();
+
 		return newResponse;
 	}
 }
