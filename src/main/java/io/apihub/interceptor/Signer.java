@@ -30,13 +30,16 @@ public class Signer {
 	private Logger logger = LoggerFactory.getLogger(Signer.class.getName());
 	private PrivateKey privateKey;
 	private PublicKey publicKey;
+
 	public static Signer getInstance() {
 		return instance;
 	}
+
 	private Signer() {
 		InputStream input = null;
 		try {
-			input = new FileInputStream(new File(Signer.class.getClassLoader().getResource("config.properties").getFile()));
+			input = new FileInputStream(
+					new File(Signer.class.getClassLoader().getResource("config.properties").getFile()));
 			prop.load(input);
 			privateKey = readPrivateKeyFromKeystore();
 			publicKey = readPublicCDC();
@@ -54,6 +57,7 @@ public class Signer {
 			}
 		}
 	}
+
 	public String signPayload(String payload) {
 		String signature = null;
 		try {
@@ -73,6 +77,7 @@ public class Signer {
 		}
 		return signature;
 	}
+
 	public Boolean verifyPayload(String payload, String signature) {
 		Signature sign = null;
 		Boolean isVerify = false;
@@ -100,6 +105,7 @@ public class Signer {
 		}
 		return isVerify;
 	}
+
 	private PrivateKey readPrivateKeyFromKeystore() {
 		PrivateKey ecKey = null;
 		try {
@@ -108,7 +114,8 @@ public class Signer {
 			FileInputStream inputStream = new FileInputStream(file);
 			KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
 			keystore.load(inputStream, prop.getProperty("keystore_password").toCharArray());
-			ecKey = (PrivateKey) keystore.getKey(prop.getProperty("key_alias"),prop.getProperty("key_password").toCharArray());
+			ecKey = (PrivateKey) keystore.getKey(prop.getProperty("key_alias"),
+					prop.getProperty("key_password").toCharArray());
 		} catch (KeyStoreException e) {
 			logger.error(e.getMessage());
 			System.exit(1);
@@ -128,14 +135,15 @@ public class Signer {
 			logger.error(e.getMessage());
 			System.exit(1);
 		} finally {
-			if(ecKey == null) {
+			if (ecKey == null) {
 				logger.error("Could not read the private key, please review your configuration");
 				System.exit(1);
 			}
 		}
-		
+
 		return ecKey;
 	}
+
 	public PublicKey readPublicCDC() {
 		PublicKey pubKey = null;
 		logger.debug("keystore_file:" + prop.getProperty("cdc_cert_file"));
@@ -153,7 +161,7 @@ public class Signer {
 			logger.error(e.getMessage());
 			System.exit(1);
 		} finally {
-			if(pubKey == null) {
+			if (pubKey == null) {
 				logger.error("Could not read the private key, please review your configuration");
 				System.exit(1);
 			}
