@@ -52,7 +52,7 @@ openssl pkcs12 -name ${ALIAS} \
   -in ${CERTIFICATE_FILE} \
   -password pass:${KEY_PASSWORD}
 ```
-- Generar un keystore dummy y eiminar su contenido.
+- Generar un keystore dummy y eliminar su contenido.
 ```sh
 #Genera un Keystore con un par de llaves dummy.
 keytool -genkey -alias dummy -keyalg RSA \
