@@ -4,9 +4,8 @@
     <groupId>io.apihub</groupId>
     <artifactId>apihub-java-client</artifactId>
     <packaging>jar</packaging>
-    <name>security-test-client</name>
+    <name>rcc-v2-client-java-client</name>
     <version>1.0.0</version>
-
     <licenses>
         <license>
             <name>Unlicense</name>
@@ -14,20 +13,18 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/security</directory>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-    </build>
-
+		<resources>
+			<resource>
+				<directory>src/main/security</directory>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
     <dependencies>
         <dependency>
             <groupId>io.swagger</groupId>
@@ -61,38 +58,37 @@
             <version>${junit-version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- dependencies added --> 
+      	<!-- dependencies added -->
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>${commons-codec-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback-version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>${logback-version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-core -->
-        <!-- Dependency that gets the provider for eliptic curves -->
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-core</artifactId>
-            <version>${jersey-version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>${commons-httpclient-version}</version>
-        </dependency>
-        
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons-codec-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-core -->
+		<!-- Dependency that gets the provider for eliptic curves -->
+		<dependency>
+		    <groupId>com.sun.jersey</groupId>
+		    <artifactId>jersey-core</artifactId>
+		    <version>${jersey-version}</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>commons-httpclient</groupId>
+		    <artifactId>commons-httpclient</artifactId>
+		    <version>${commons-httpclient-version}</version>
+		</dependency>
     </dependencies>
     <properties>
         <java.version>1.8</java.version>
