@@ -9,34 +9,34 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.apihub.client.model.Empleo;
+import io.apihub.client.model.DomicilioRespuesta;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-@ApiModel(description = "Si existen empleos, se listarán.")
+@ApiModel(description = "Si existen créditos, se listarán.")
 
 
-public class Empleos {
-  @SerializedName("empleos")
-  private List<Empleo> empleos = null;
-  public Empleos empleos(List<Empleo> empleos) {
-    this.empleos = empleos;
+public class DomiciliosRespuesta {
+  @SerializedName("domicilios")
+  private List<DomicilioRespuesta> domicilios = null;
+  public DomiciliosRespuesta domicilios(List<DomicilioRespuesta> domicilios) {
+    this.domicilios = domicilios;
     return this;
   }
-  public Empleos addEmpleosItem(Empleo empleosItem) {
-    if (this.empleos == null) {
-      this.empleos = new ArrayList<Empleo>();
+  public DomiciliosRespuesta addDomiciliosItem(DomicilioRespuesta domiciliosItem) {
+    if (this.domicilios == null) {
+      this.domicilios = new ArrayList<DomicilioRespuesta>();
     }
-    this.empleos.add(empleosItem);
+    this.domicilios.add(domiciliosItem);
     return this;
   }
    
   @ApiModelProperty(value = "")
-  public List<Empleo> getEmpleos() {
-    return empleos;
+  public List<DomicilioRespuesta> getDomicilios() {
+    return domicilios;
   }
-  public void setEmpleos(List<Empleo> empleos) {
-    this.empleos = empleos;
+  public void setDomicilios(List<DomicilioRespuesta> domicilios) {
+    this.domicilios = domicilios;
   }
   @Override
   public boolean equals(java.lang.Object o) {
@@ -46,19 +46,19 @@ public class Empleos {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Empleos empleos = (Empleos) o;
-    return Objects.equals(this.empleos, empleos.empleos);
+    DomiciliosRespuesta domiciliosRespuesta = (DomiciliosRespuesta) o;
+    return Objects.equals(this.domicilios, domiciliosRespuesta.domicilios);
   }
   @Override
   public int hashCode() {
-    return Objects.hash(empleos);
+    return Objects.hash(domicilios);
   }
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Empleos {\n");
+    sb.append("class DomiciliosRespuesta {\n");
     
-    sb.append("    empleos: ").append(toIndentedString(empleos)).append("\n");
+    sb.append("    domicilios: ").append(toIndentedString(domicilios)).append("\n");
     sb.append("}");
     return sb.toString();
   }

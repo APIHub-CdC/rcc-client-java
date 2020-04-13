@@ -24,7 +24,6 @@ public class SignerInterceptor implements Interceptor {
 	private Logger logger = LoggerFactory.getLogger(Signer.class.getName());
 	private Signer signer;
 	private Request newRequest;
-
 	@Override
 	public Response intercept(Chain chain) throws IOException {
 		this.signer = Signer.getInstance();
@@ -32,9 +31,7 @@ public class SignerInterceptor implements Interceptor {
 		this.newRequest = this.procesarFirmado(originalRequest);
 		Response response = chain.proceed(newRequest);
 		return this.procesarVerificado(response);
-
 	}
-
 	private static String bodyToString(final Request request) {
 		try {
 			final Request copy = request.newBuilder().build();
@@ -45,7 +42,6 @@ public class SignerInterceptor implements Interceptor {
 			return null;
 		}
 	}
-
 	private Request procesarFirmado(Request originalRequest) {
 		logger.debug("Generando firmado...");
 		String payload = null;
@@ -66,7 +62,6 @@ public class SignerInterceptor implements Interceptor {
 		return originalRequest.newBuilder().header("x-signature", signature)
 				.method(originalRequest.method(), originalRequest.body()).build();
 	}
-
 	private Response procesarVerificado(Response response) {
 		logger.debug("Verificando firmado...");
 		ResponseBody bodyAsStream = null;
@@ -107,10 +102,8 @@ public class SignerInterceptor implements Interceptor {
 		} else {
 			outResponse = buildResponseBody(response.code(), null, response, contentType, content);
 		}
-
 		return outResponse;
 	}
-
 	private String generateError(String code, String message) {
 		logger.debug("Generando error");
 		Errores errs = new Errores();
@@ -118,13 +111,9 @@ public class SignerInterceptor implements Interceptor {
 		err.setCodigo(code);
 		err.setMensaje(message);
 		errs.addErroresItem(err);
-
 		Gson gson = new Gson();
-
 		return gson.toJson(errs);
-
 	}
-
 	private Response buildResponseBody(Integer statusCode, String message, Response response, MediaType contentType,
 			byte[] content) {
 		ResponseBody responseBody = null;
@@ -135,7 +124,6 @@ public class SignerInterceptor implements Interceptor {
 			responseBody = ResponseBody.create(contentType, content);
 		Response newResponse = new Builder().code(statusCode).protocol(Protocol.HTTP_1_1).message(responseMessage)
 				.request(this.newRequest).body(responseBody).headers(response.headers()).build();
-
 		return newResponse;
 	}
 }
