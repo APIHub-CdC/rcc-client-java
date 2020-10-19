@@ -30,6 +30,7 @@ jobs:
       run: mvn --settings settingsAPIHUB.xml -B package --file pom.xml -Dmaven.test.skip=true
 
     - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -Dmaven.test.skip=true
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_ACTOR: ${{ github.repository_owner }}
+      run: mvn deploy --settings settingsAPIHUB.xml -Dmaven.test.skip=true
