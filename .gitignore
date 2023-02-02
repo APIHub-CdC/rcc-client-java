@@ -23,3 +23,5 @@ bin/
 
 # security
 *.jks
+
+target/*
