@@ -65,7 +65,6 @@ public class ApiTest {
     @Test
     public void getReporteTest() throws ApiException {
 
-		Boolean xFullReport = false;
 		Integer estatusOK = 200;
 		Integer estatusNoContent = 204;
 
@@ -96,7 +95,7 @@ public class ApiTest {
         
         try {
 			
-			ApiResponse<?> response = api.getGenericReporte(xApiKey, usernameCDC, passwordCDC, persona, xFullReport.toString());
+			ApiResponse<?> response = api.getGenericReporte(xApiKey, usernameCDC, passwordCDC, persona);
 			
 			Assert.assertTrue(estatusOK.equals(response.getStatusCode()));
 			
@@ -104,22 +103,7 @@ public class ApiTest {
 
 				Respuesta responseOK = (Respuesta) response.getData();
 				logger.info(responseOK.toString());
-				if (responseOK.getFolioConsulta() != null && !xFullReport ) {
-
-					String folioConsulta = responseOK.getFolioConsulta();
-
-					Consultas consultas2 = api.getConsultas(folioConsulta, xApiKey, usernameCDC, passwordCDC);
-					Assert.assertTrue(consultas2.getConsultas() != null);
-
-					Creditos creditos = api.getCreditos(folioConsulta, xApiKey, usernameCDC, passwordCDC);
-					Assert.assertTrue(creditos.getCreditos() != null);
-
-					DomiciliosRespuesta domicilios = api.getDomicilios(folioConsulta, xApiKey, usernameCDC, passwordCDC);
-					Assert.assertTrue(domicilios.getDomicilios() != null);
-
-					Empleos empleos = api.getEmpleos(folioConsulta, xApiKey, usernameCDC, passwordCDC);
-					Assert.assertTrue(empleos.getEmpleos() != null);
-				}				
+					
 			}
 		} catch (ApiException e) {
 			
