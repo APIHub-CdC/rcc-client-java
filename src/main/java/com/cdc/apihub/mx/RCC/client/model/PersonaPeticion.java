@@ -23,7 +23,7 @@ public class PersonaPeticion {
   private String segundoNombre = null;
   @SerializedName("fechaNacimiento")
   private String fechaNacimiento = null;
-  @SerializedName("RFC")
+  @SerializedName("rfc")
   private String RFC = null;
   @SerializedName("CURP")
   private String CURP = null;

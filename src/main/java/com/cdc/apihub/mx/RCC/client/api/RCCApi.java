@@ -504,7 +504,7 @@ public class RCCApi {
     
     public okhttp3.Call getReporteCall( String xApiKey, String username, String password, PersonaPeticion request,  final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = request;
-        String localVarPath = "";
+        String localVarPath = "/v1/rcc";
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();

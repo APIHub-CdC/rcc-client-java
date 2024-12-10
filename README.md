@@ -177,33 +177,22 @@ public class ApiTest {
 	private Logger logger = LoggerFactory.getLogger(ApiTest.class.getName());
 
 	private ApiClient apiClient;
-
-	private String keystoreFile = "your_path_for_your_keystore/keystore.jks";
-	private String cdcCertFile = "your_path_for_certificate_of_cdc/cdc_cert.pem";
-	private String keystorePassword = "your_super_secure_keystore_password";
-	private String keyAlias = "your_key_alias";
-	private String keyPassword = "your_super_secure_password";
 	
 	private String usernameCDC = "your_username_otrorgante";
-	private String passwordCDC = "your_password_otorgante";	
-	
-	private String url = "the_url";
+	private String passwordCDC = "your_password_otorgante";
 	private String xApiKey = "X_Api_Key";
 	
 	private SignerInterceptor interceptor;
 
-	@Before()
-	public void setUp() {
-
-		interceptor = new SignerInterceptor(keystoreFile, cdcCertFile, keystorePassword, keyAlias, keyPassword);
-		this.apiClient = api.getApiClient();
-		this.apiClient.setBasePath(url);
-		OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-			    .readTimeout(30, TimeUnit.SECONDS)
-			    .addInterceptor(interceptor)
-			    .build();
-		apiClient.setHttpClient(okHttpClient);
-	}
+    @Before()
+    public void setUp() {
+        this.apiClient = api.getApiClient();
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .readTimeout(30, TimeUnit.SECONDS)
+                .addInterceptor(new SignerInterceptor())
+                .build();
+        apiClient.setHttpClient(okHttpClient);
+    }
 
     @Test
     public void getReporteTest() throws ApiException {

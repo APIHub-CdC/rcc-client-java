@@ -12,15 +12,15 @@ import com.cdc.apihub.mx.RCC.client.model.CatalogoTipoDomicilio;
 public class DomicilioPeticion {
   @SerializedName("direccion")
   private String direccion = null;
-  @SerializedName("coloniaPoblacion")
+  @SerializedName("colonia")
   private String coloniaPoblacion = null;
-  @SerializedName("delegacionMunicipio")
+  @SerializedName("municipio")
   private String delegacionMunicipio = null;
   @SerializedName("ciudad")
   private String ciudad = null;
   @SerializedName("estado")
   private CatalogoEstados estado = null;
-  @SerializedName("CP")
+  @SerializedName("codigoPostal")
   private String CP = null;
   @SerializedName("fechaResidencia")
   private String fechaResidencia = null;
